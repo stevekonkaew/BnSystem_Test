@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace BnSystem_Test.Models
 {
-    public class Accounts
+    public class AccTransfers
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [StringLength(20)]
-        public string IBAN { get; set; }
+        [StringLength(50)]
+        public decimal Amount { get; set; }
+
         [StringLength(10)]
         public string active_status { get; set; }
         public DateTime? create_date { get; set; }
@@ -21,8 +22,17 @@ namespace BnSystem_Test.Models
         public DateTime? update_date { get; set; }
         [StringLength(50)]
         public string update_user { get; set; }
-        public virtual ICollection<AccTransfers> AccTransfers { get; set; }
+        public int? Accounts_Id { get; set; }
+        [ForeignKey("Accounts_Id")]
+        public virtual Accounts Accounts { get; set; }
 
-        public decimal? balance { get; set; }
+        [StringLength(10)]
+        public string is_calculated { get; set; }
+        //
+        //Type of action
+        //
+        //
+        [StringLength(10)]
+        public string action_type { get; set; }
     }
 }

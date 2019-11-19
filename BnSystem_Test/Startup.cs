@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BnSystem_Test.Models;
+using BnSystem_Test.Models.Repositorys;
+using BnSystem_Test.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,8 +35,10 @@ namespace BnSystem_Test
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<StoreDb>(opts => opts.UseSqlServer(Configuration["ConnectionString:BnSystemDB"]));
+            services.AddScoped<IDataRepository<Accounts>, AccountsService>();
+            services.AddScoped<IDataRepository<AccTransfers>, AccTransfersService>();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
